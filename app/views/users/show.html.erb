@@ -1,0 +1,16 @@
+<h1><%= @user.username || @user.email %>'s Profile</h1>
+
+<h3>Posts</h3>
+
+<% @posts.each do |post| %>
+  <div class="card mb-3">
+    <div class="card-body">
+      <p class="card-text"><%= simple_format(h(post.content)) %></p>
+      <p class="card-text"><small class="text-muted"><%= time_ago_in_words(post.created_at) %> ago</small></p>
+      <span><%= pluralize(post.likes_count, 'like') %></span>
+      <%= link_to 'View', post_path(post), class: 'btn btn-sm btn-link' %>
+    </div>
+  </div>
+<% end %>
+
+<%= link_to 'Back', posts_path, class: 'btn btn-secondary' %>

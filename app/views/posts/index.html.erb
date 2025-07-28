@@ -1,0 +1,52 @@
+<h1>Recent Posts</h1>
+
+<% @posts.each do |post| %>
+  <div class="card mb-3">
+    <div class="card-body">
+      <h5 class="card-title">
+        <%= link_to post.user.username || post.user.email, user_path(post.user) %>
+      </h5>
+      <p class="card-text"><%= simple_format(h(post.content)) %></p>
+      <p class="card-text"><small class="text-muted"><%= time_ago_in_words(post.created_at) %> ago</small></p>
+      <div class="d-flex align-items-center mb-2">
+        <% if current_user.liked?(post) %>
+          <!-- If already liked, show unlike button -->
+          <%= button_to 'Unlike', post_like_path(post, current_user.likes.find_by(post: post)), method: :delete, class: 'btn btn-sm btn-outline-danger me-2' %>
+        <% else %>
+          <!-- Else show like button -->
+          <%= button_to 'Like', post_likes_path(post), method: :post, class: 'btn btn-sm btn-outline-primary me-2' %>
+        <% end %>
+        <span><%= pluralize(post.likes_count, 'like') %></span>
+      </div>
+
+      <!-- Comments -->
+      <div class="mb-2">
+        <% post.comments.each do |comment| %>
+          <div class="border rounded p-2 mb-1">
+            <strong><%= link_to comment.user.username || comment.user.email, user_path(comment.user) %>:</strong>
+            <span><%= h(comment.content) %></span>
+            <% if comment.user == current_user %>
+              <%= link_to 'Delete', post_comment_path(post, comment), method: :delete, data: { confirm: 'Are you sure?' }, class: 'text-danger ms-2' %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- New Comment Form -->
+      <%= form_with(model: [post, Comment.new], local: true) do |form| %>
+        <div class="mb-2">
+          <%= form.text_area :content, rows: 2, class: 'form-control', placeholder: 'Add a comment...' %>
+        </div>
+        <%= form.submit 'Comment', class: 'btn btn-sm btn-secondary' %>
+      <% end %>
+
+      <!-- Post actions for owner -->
+      <% if post.user == current_user %>
+        <div class="mt-2">
+          <%= link_to 'Edit', edit_post_path(post), class: 'btn btn-sm btn-outline-secondary me-2' %>
+          <%= link_to 'Delete', post, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-outline-danger' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

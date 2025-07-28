@@ -1,0 +1,19 @@
+<%= form_with(model: post, local: true) do |form| %>
+  <% if post.errors.any? %>
+    <div class="alert alert-danger">
+      <h5><%= pluralize(post.errors.count, 'error') %> prohibited this post from being saved:</h5>
+      <ul>
+        <% post.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= form.label :content, "What's on your mind?" %>
+    <%= form.text_area :content, rows: 5, class: 'form-control', placeholder: "Write something..." %>
+  </div>
+
+  <%= form.submit class: 'btn btn-primary' %>
+<% end %>

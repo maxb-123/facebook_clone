@@ -1,0 +1,22 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# Ignore bundler config.
+/.bundle
+
+# Ignore the directory where Rails store compiled assets and temporary files.
+/tmp
+
+# Ignore log files.
+/log
+
+# Ignore database files and schema dumps.
+/db/*.sqlite3
+/db/*.sqlite3-journal
+/db/schema.rb
+
+# Ignore secrets and credentials.
+/config/master.key
+/config/credentials.yml.enc
+
+# Ignore node_modules if you decide to use webpack or importmap with npm packages.
+/node_modules
